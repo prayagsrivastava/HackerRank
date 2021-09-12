@@ -1,8 +1,11 @@
+Practice/Algorithms/solve-me-first
+Practice/Algorithms/simple-array-sum
+
+
 Practice/C/libs
 Practice/C/libs.c
 Practice/C/test.c
 Practice/C/test
-Practice/C/Makefile
 Practice/C/conditional-statements-in-c
 Practice/C/for-loop-in-c
 Practice/C/functions-in-c
@@ -28,3 +31,5 @@ Practice/C/post-transition
 Practice/C/too-high-boxes
 Practice/C/small-triangles-large-triangles
 Practice/C/bitwise-operators-in-c
+
+Makefile
