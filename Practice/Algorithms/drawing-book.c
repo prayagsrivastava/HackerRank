@@ -12,52 +12,33 @@
 char* readline();
 char* ltrim(char*);
 char* rtrim(char*);
-char** split_string(char*);
 
 int parse_int(char*);
 
 /*
- * Complete the 'sockMerchant' function below.
+ * Complete the 'pageCount' function below.
  *
  * The function is expected to return an INTEGER.
  * The function accepts following parameters:
  *  1. INTEGER n
- *  2. INTEGER_ARRAY ar
+ *  2. INTEGER p
  */
 
-int maximum(int *a, int a_count)
-{
-    int max = a[0];
-    for (int c=1; c<a_count; c++)
-        if (a[c] > max)
-            max = a[c];
+int pageCount(int n, int p) {
+    if (p == 1)
+        return 0;
+    else if ((p == n) || ((p == n-1) && (n%2 != 0)))
+        return 0;
+    else if ((p == n) || ((p == n-1) && (n%2 == 0)))
+        return 1;
     
-    return max;
-}
+    int c = (n-p)/2;
+    int d = (p/2);
 
-int sockMerchant(int n, int ar_count, int* ar)
-{
-    int max = maximum(ar, ar_count);
-    max++;
-    int* arr = malloc(sizeof(int)*max);
-
-    for(int c=0; c<max; c++)
-        arr[c] = 0;
-    
-    int temp;
-    for (int c=0; c<ar_count; c++)
-    {
-        temp = ar[c];
-        arr[temp]++;
-    }
-
-    int count = 0;
-    for (int c=0; c<max; c++)
-        if(arr[c] >= 2)
-            count = count + (arr[c]/2);
-    
-    free(arr);
-    return count;
+    if (c < d)
+        return c;
+    else
+        return d;
 }
 
 int main()
@@ -66,17 +47,9 @@ int main()
 
     int n = parse_int(ltrim(rtrim(readline())));
 
-    char** ar_temp = split_string(rtrim(readline()));
+    int p = parse_int(ltrim(rtrim(readline())));
 
-    int* ar = malloc(n * sizeof(int));
-
-    for (int i = 0; i < n; i++) {
-        int ar_item = parse_int(*(ar_temp + i));
-
-        *(ar + i) = ar_item;
-    }
-
-    int result = sockMerchant(n, n, ar);
+    int result = pageCount(n, p);
 
     fprintf(fptr, "%d\n", result);
 
@@ -171,27 +144,6 @@ char* rtrim(char* str) {
     *(end + 1) = '\0';
 
     return str;
-}
-
-char** split_string(char* str) {
-    char** splits = NULL;
-    char* token = strtok(str, " ");
-
-    int spaces = 0;
-
-    while (token) {
-        splits = realloc(splits, sizeof(char*) * ++spaces);
-
-        if (!splits) {
-            return splits;
-        }
-
-        splits[spaces - 1] = token;
-
-        token = strtok(NULL, " ");
-    }
-
-    return splits;
 }
 
 int parse_int(char* str) {

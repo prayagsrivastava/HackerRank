@@ -12,71 +12,46 @@
 char* readline();
 char* ltrim(char*);
 char* rtrim(char*);
-char** split_string(char*);
 
 int parse_int(char*);
 
 /*
- * Complete the 'sockMerchant' function below.
+ * Complete the 'countingValleys' function below.
  *
  * The function is expected to return an INTEGER.
  * The function accepts following parameters:
- *  1. INTEGER n
- *  2. INTEGER_ARRAY ar
+ *  1. INTEGER steps
+ *  2. STRING path
  */
 
-int maximum(int *a, int a_count)
+int countingValleys(int steps, char* path)
 {
-    int max = a[0];
-    for (int c=1; c<a_count; c++)
-        if (a[c] > max)
-            max = a[c];
-    
-    return max;
-}
-
-int sockMerchant(int n, int ar_count, int* ar)
-{
-    int max = maximum(ar, ar_count);
-    max++;
-    int* arr = malloc(sizeof(int)*max);
-
-    for(int c=0; c<max; c++)
-        arr[c] = 0;
-    
-    int temp;
-    for (int c=0; c<ar_count; c++)
+    int valley = 0, downs = 0, ups = 0;
+    for (int c = 0; c < steps; c++)
     {
-        temp = ar[c];
-        arr[temp]++;
+        if (path[c] == 'D')
+            downs++;
+        else
+            ups++;
+        if ((ups == downs) && (path[c] == 'U'))
+        {
+            valley++;
+            ups = 0;
+            downs = 0;
+        }
     }
-
-    int count = 0;
-    for (int c=0; c<max; c++)
-        if(arr[c] >= 2)
-            count = count + (arr[c]/2);
-    
-    free(arr);
-    return count;
+    return valley;
 }
 
 int main()
 {
     FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    int n = parse_int(ltrim(rtrim(readline())));
+    int steps = parse_int(ltrim(rtrim(readline())));
 
-    char** ar_temp = split_string(rtrim(readline()));
+    char* path = readline();
 
-    int* ar = malloc(n * sizeof(int));
-
-    for (int i = 0; i < n; i++) {
-        int ar_item = parse_int(*(ar_temp + i));
-
-        *(ar + i) = ar_item;
-    }
-
-    int result = sockMerchant(n, n, ar);
+    int result = countingValleys(steps, path);
 
     fprintf(fptr, "%d\n", result);
 
@@ -171,27 +146,6 @@ char* rtrim(char* str) {
     *(end + 1) = '\0';
 
     return str;
-}
-
-char** split_string(char* str) {
-    char** splits = NULL;
-    char* token = strtok(str, " ");
-
-    int spaces = 0;
-
-    while (token) {
-        splits = realloc(splits, sizeof(char*) * ++spaces);
-
-        if (!splits) {
-            return splits;
-        }
-
-        splits[spaces - 1] = token;
-
-        token = strtok(NULL, " ");
-    }
-
-    return splits;
 }
 
 int parse_int(char* str) {

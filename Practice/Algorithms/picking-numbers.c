@@ -17,47 +17,15 @@ char** split_string(char*);
 int parse_int(char*);
 
 /*
- * Complete the 'sockMerchant' function below.
+ * Complete the 'pickingNumbers' function below.
  *
  * The function is expected to return an INTEGER.
- * The function accepts following parameters:
- *  1. INTEGER n
- *  2. INTEGER_ARRAY ar
+ * The function accepts INTEGER_ARRAY a as parameter.
  */
 
-int maximum(int *a, int a_count)
-{
-    int max = a[0];
-    for (int c=1; c<a_count; c++)
-        if (a[c] > max)
-            max = a[c];
-    
-    return max;
-}
+int pickingNumbers(int a_count, int* a) {
+    return 0;
 
-int sockMerchant(int n, int ar_count, int* ar)
-{
-    int max = maximum(ar, ar_count);
-    max++;
-    int* arr = malloc(sizeof(int)*max);
-
-    for(int c=0; c<max; c++)
-        arr[c] = 0;
-    
-    int temp;
-    for (int c=0; c<ar_count; c++)
-    {
-        temp = ar[c];
-        arr[temp]++;
-    }
-
-    int count = 0;
-    for (int c=0; c<max; c++)
-        if(arr[c] >= 2)
-            count = count + (arr[c]/2);
-    
-    free(arr);
-    return count;
 }
 
 int main()
@@ -66,17 +34,17 @@ int main()
 
     int n = parse_int(ltrim(rtrim(readline())));
 
-    char** ar_temp = split_string(rtrim(readline()));
+    char** a_temp = split_string(rtrim(readline()));
 
-    int* ar = malloc(n * sizeof(int));
+    int* a = malloc(n * sizeof(int));
 
     for (int i = 0; i < n; i++) {
-        int ar_item = parse_int(*(ar_temp + i));
+        int a_item = parse_int(*(a_temp + i));
 
-        *(ar + i) = ar_item;
+        *(a + i) = a_item;
     }
 
-    int result = sockMerchant(n, n, ar);
+    int result = pickingNumbers(n, a);
 
     fprintf(fptr, "%d\n", result);
 
