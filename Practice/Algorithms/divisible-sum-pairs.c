@@ -17,57 +17,47 @@ char** split_string(char*);
 int parse_int(char*);
 
 /*
- * Complete the 'birthday' function below.
+ * Complete the 'divisibleSumPairs' function below.
  *
  * The function is expected to return an INTEGER.
  * The function accepts following parameters:
- *  1. INTEGER_ARRAY s
- *  2. INTEGER d
- *  3. INTEGER m
+ *  1. INTEGER n
+ *  2. INTEGER k
+ *  3. INTEGER_ARRAY ar
  */
 
-int birthday(int s_count, int* s, int d, int m)
+int divisibleSumPairs(int n, int k, int ar_count, int* ar)
 {
-    int counter = 0, share = 0;
-    for (int c = 0; c < s_count; c++)
-    {
-        for (int e = c; e < (c + m); e++)
-        {
-            if (e == s_count)
-                break;
-            
-            counter += s[e];
-        }
-        if (counter == d)
-            share++;
-        counter = 0;
-    }
-    return share;
+    int pairs = 0;
+    for (int c=0; c<ar_count; c++)
+        for (int d=c+1; d<ar_count; d++)
+            if (((ar[c] + ar[d]) % k) == 0)
+                pairs++;
+    
+    return pairs;
 }
 
 int main()
 {
     FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    int n = parse_int(ltrim(rtrim(readline())));
-
-    char** s_temp = split_string(rtrim(readline()));
-
-    int* s = malloc(n * sizeof(int));
-
-    for (int i = 0; i < n; i++) {
-        int s_item = parse_int(*(s_temp + i));
-
-        *(s + i) = s_item;
-    }
-
     char** first_multiple_input = split_string(rtrim(readline()));
 
-    int d = parse_int(*(first_multiple_input + 0));
+    int n = parse_int(*(first_multiple_input + 0));
 
-    int m = parse_int(*(first_multiple_input + 1));
+    int k = parse_int(*(first_multiple_input + 1));
 
-    int result = birthday(n, s, d, m);
+    char** ar_temp = split_string(rtrim(readline()));
+
+    int* ar = malloc(n * sizeof(int));
+
+    for (int i = 0; i < n; i++) {
+        int ar_item = parse_int(*(ar_temp + i));
+
+        *(ar + i) = ar_item;
+    }
+
+    int result = divisibleSumPairs(n, k, n, ar);
 
     fprintf(fptr, "%d\n", result);
 
