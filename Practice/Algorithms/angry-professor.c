@@ -17,58 +17,73 @@ char** split_string(char*);
 int parse_int(char*);
 
 /*
- * Complete the 'designerPdfViewer' function below.
+ * Complete the 'angryProfessor' function below.
  *
- * The function is expected to return an INTEGER.
+ * The function is expected to return a STRING.
  * The function accepts following parameters:
- *  1. INTEGER_ARRAY h
- *  2. STRING word
+ *  1. INTEGER k
+ *  2. INTEGER_ARRAY a
  */
 
-int maximum(int *a, int a_count)
+/*
+ * To return the string from the function, you should either do static allocation or dynamic allocation
+ *
+ * For example,
+ * char* return_string_using_static_allocation() {
+ *     static char s[] = "static allocation of string";
+ *
+ *     return s;
+ * }
+ *
+ * char* return_string_using_dynamic_allocation() {
+ *     char* s = malloc(100 * sizeof(char));
+ *
+ *     s = "dynamic allocation of string";
+ *
+ *     return s;
+ * }
+ *
+ */
+char* angryProfessor(int k, int a_count, int* a)
 {
-    int max = a[0];
-    for (int c=1; c<a_count; c++)
-        if (a[c] > max)
-            max = a[c];
+    int ontime = 0;
+    for (int c=0; c<a_count; c++)
+        if(a[c] <= 0)
+            ontime++;
     
-    return max;
-}
- 
-
-int designerPdfViewer(int h_count, int* h, char* word) {
-    int l = strlen(word), index;
-    int *heights = malloc(sizeof(int)*l);
-    for (int c=0; c<l; c++)
-    {
-        index = (int) word[c] - 97;
-        heights[c] = h[index];
-    }
-    
-    int max = maximum(heights, l);
-    free(heights);
-    return (l*1*max);
+    if (ontime >= k)
+        return "NO";
+    else
+        return "YES";
 }
 
 int main()
 {
     FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    char** h_temp = split_string(rtrim(readline()));
+    int t = parse_int(ltrim(rtrim(readline())));
 
-    int* h = malloc(26 * sizeof(int));
+    for (int t_itr = 0; t_itr < t; t_itr++) {
+        char** first_multiple_input = split_string(rtrim(readline()));
 
-    for (int i = 0; i < 26; i++) {
-        int h_item = parse_int(*(h_temp + i));
+        int n = parse_int(*(first_multiple_input + 0));
 
-        *(h + i) = h_item;
+        int k = parse_int(*(first_multiple_input + 1));
+
+        char** a_temp = split_string(rtrim(readline()));
+
+        int* a = malloc(n * sizeof(int));
+
+        for (int i = 0; i < n; i++) {
+            int a_item = parse_int(*(a_temp + i));
+
+            *(a + i) = a_item;
+        }
+
+        char* result = angryProfessor(k, n, a);
+
+        fprintf(fptr, "%s\n", result);
     }
-
-    char* word = readline();
-
-    int result = designerPdfViewer(26, h, word);
-
-    fprintf(fptr, "%d\n", result);
 
     fclose(fptr);
 
@@ -100,7 +115,7 @@ char* readline() {
         data = realloc(data, alloc_length);
 
         if (!data) {
-            data = '\0';
+            data = NULL;
 
             break;
         }
@@ -112,13 +127,13 @@ char* readline() {
         data = realloc(data, data_length);
 
         if (!data) {
-            data = '\0';
+            data = NULL;
         }
     } else {
         data = realloc(data, data_length + 1);
 
         if (!data) {
-            data = '\0';
+            data = NULL;
         } else {
             data[data_length] = '\0';
         }
@@ -129,7 +144,7 @@ char* readline() {
 
 char* ltrim(char* str) {
     if (!str) {
-        return '\0';
+        return NULL;
     }
 
     if (!*str) {
@@ -145,7 +160,7 @@ char* ltrim(char* str) {
 
 char* rtrim(char* str) {
     if (!str) {
-        return '\0';
+        return NULL;
     }
 
     if (!*str) {

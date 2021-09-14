@@ -12,63 +12,40 @@
 char* readline();
 char* ltrim(char*);
 char* rtrim(char*);
-char** split_string(char*);
 
 int parse_int(char*);
 
 /*
- * Complete the 'designerPdfViewer' function below.
+ * Complete the 'utopianTree' function below.
  *
  * The function is expected to return an INTEGER.
- * The function accepts following parameters:
- *  1. INTEGER_ARRAY h
- *  2. STRING word
+ * The function accepts INTEGER n as parameter.
  */
 
-int maximum(int *a, int a_count)
+int utopianTree(int n)
 {
-    int max = a[0];
-    for (int c=1; c<a_count; c++)
-        if (a[c] > max)
-            max = a[c];
-    
-    return max;
-}
- 
-
-int designerPdfViewer(int h_count, int* h, char* word) {
-    int l = strlen(word), index;
-    int *heights = malloc(sizeof(int)*l);
-    for (int c=0; c<l; c++)
-    {
-        index = (int) word[c] - 97;
-        heights[c] = h[index];
-    }
-    
-    int max = maximum(heights, l);
-    free(heights);
-    return (l*1*max);
+    int height = 1;
+    for (int c=1; c<=n; c++)
+        if (c%2 == 0)
+            height++;
+        else
+            height *= 2;
+    return height;
 }
 
 int main()
 {
     FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    char** h_temp = split_string(rtrim(readline()));
+    int t = parse_int(ltrim(rtrim(readline())));
 
-    int* h = malloc(26 * sizeof(int));
+    for (int t_itr = 0; t_itr < t; t_itr++) {
+        int n = parse_int(ltrim(rtrim(readline())));
 
-    for (int i = 0; i < 26; i++) {
-        int h_item = parse_int(*(h_temp + i));
+        int result = utopianTree(n);
 
-        *(h + i) = h_item;
+        fprintf(fptr, "%d\n", result);
     }
-
-    char* word = readline();
-
-    int result = designerPdfViewer(26, h, word);
-
-    fprintf(fptr, "%d\n", result);
 
     fclose(fptr);
 
@@ -161,27 +138,6 @@ char* rtrim(char* str) {
     *(end + 1) = '\0';
 
     return str;
-}
-
-char** split_string(char* str) {
-    char** splits = NULL;
-    char* token = strtok(str, " ");
-
-    int spaces = 0;
-
-    while (token) {
-        splits = realloc(splits, sizeof(char*) * ++spaces);
-
-        if (!splits) {
-            return splits;
-        }
-
-        splits[spaces - 1] = token;
-
-        token = strtok(NULL, " ");
-    }
-
-    return splits;
 }
 
 int parse_int(char* str) {

@@ -17,58 +17,47 @@ char** split_string(char*);
 int parse_int(char*);
 
 /*
- * Complete the 'designerPdfViewer' function below.
+ * Complete the 'saveThePrisoner' function below.
  *
  * The function is expected to return an INTEGER.
  * The function accepts following parameters:
- *  1. INTEGER_ARRAY h
- *  2. STRING word
+ *  1. INTEGER n
+ *  2. INTEGER m
+ *  3. INTEGER s
  */
 
-int maximum(int *a, int a_count)
+int saveThePrisoner(int n, int m, int s)
 {
-    int max = a[0];
-    for (int c=1; c<a_count; c++)
-        if (a[c] > max)
-            max = a[c];
-    
-    return max;
-}
- 
-
-int designerPdfViewer(int h_count, int* h, char* word) {
-    int l = strlen(word), index;
-    int *heights = malloc(sizeof(int)*l);
-    for (int c=0; c<l; c++)
-    {
-        index = (int) word[c] - 97;
-        heights[c] = h[index];
-    }
-    
-    int max = maximum(heights, l);
-    free(heights);
-    return (l*1*max);
+    return (((s + m - 2) % n) + 1);
+    /*
+    if (m == 0)
+        return s-1;
+    else if (s > n)
+        return saveThePrisoner(n, m-1, 2);
+    else
+        return saveThePrisoner(n, m-1, s+1);
+    */
 }
 
 int main()
 {
     FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    char** h_temp = split_string(rtrim(readline()));
+    int t = parse_int(ltrim(rtrim(readline())));
 
-    int* h = malloc(26 * sizeof(int));
+    for (int t_itr = 0; t_itr < t; t_itr++) {
+        char** first_multiple_input = split_string(rtrim(readline()));
 
-    for (int i = 0; i < 26; i++) {
-        int h_item = parse_int(*(h_temp + i));
+        int n = parse_int(*(first_multiple_input + 0));
 
-        *(h + i) = h_item;
+        int m = parse_int(*(first_multiple_input + 1));
+
+        int s = parse_int(*(first_multiple_input + 2));
+
+        int result = saveThePrisoner(n, m, s);
+
+        fprintf(fptr, "%d\n", result);
     }
-
-    char* word = readline();
-
-    int result = designerPdfViewer(26, h, word);
-
-    fprintf(fptr, "%d\n", result);
 
     fclose(fptr);
 
@@ -100,7 +89,7 @@ char* readline() {
         data = realloc(data, alloc_length);
 
         if (!data) {
-            data = '\0';
+            data = NULL;
 
             break;
         }
@@ -112,13 +101,13 @@ char* readline() {
         data = realloc(data, data_length);
 
         if (!data) {
-            data = '\0';
+            data = NULL;
         }
     } else {
         data = realloc(data, data_length + 1);
 
         if (!data) {
-            data = '\0';
+            data = NULL;
         } else {
             data[data_length] = '\0';
         }
@@ -129,7 +118,7 @@ char* readline() {
 
 char* ltrim(char* str) {
     if (!str) {
-        return '\0';
+        return NULL;
     }
 
     if (!*str) {
@@ -145,7 +134,7 @@ char* ltrim(char* str) {
 
 char* rtrim(char* str) {
     if (!str) {
-        return '\0';
+        return NULL;
     }
 
     if (!*str) {

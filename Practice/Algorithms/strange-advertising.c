@@ -12,61 +12,36 @@
 char* readline();
 char* ltrim(char*);
 char* rtrim(char*);
-char** split_string(char*);
 
 int parse_int(char*);
 
 /*
- * Complete the 'designerPdfViewer' function below.
+ * Complete the 'viralAdvertising' function below.
  *
  * The function is expected to return an INTEGER.
- * The function accepts following parameters:
- *  1. INTEGER_ARRAY h
- *  2. STRING word
+ * The function accepts INTEGER n as parameter.
  */
 
-int maximum(int *a, int a_count)
+int viralAdvertising(int n)
 {
-    int max = a[0];
-    for (int c=1; c<a_count; c++)
-        if (a[c] > max)
-            max = a[c];
-    
-    return max;
-}
- 
-
-int designerPdfViewer(int h_count, int* h, char* word) {
-    int l = strlen(word), index;
-    int *heights = malloc(sizeof(int)*l);
-    for (int c=0; c<l; c++)
-    {
-        index = (int) word[c] - 97;
-        heights[c] = h[index];
+    int shared = 5, liked = 0, total = 0;
+    for (int x = 1; x <= n; x++)
+    {   
+        if (x != 1)
+            shared = liked * 3;
+        liked = (shared / 2);
+        total += liked;
     }
-    
-    int max = maximum(heights, l);
-    free(heights);
-    return (l*1*max);
+    return total;
 }
 
 int main()
 {
     FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    char** h_temp = split_string(rtrim(readline()));
+    int n = parse_int(ltrim(rtrim(readline())));
 
-    int* h = malloc(26 * sizeof(int));
-
-    for (int i = 0; i < 26; i++) {
-        int h_item = parse_int(*(h_temp + i));
-
-        *(h + i) = h_item;
-    }
-
-    char* word = readline();
-
-    int result = designerPdfViewer(26, h, word);
+    int result = viralAdvertising(n);
 
     fprintf(fptr, "%d\n", result);
 
@@ -161,27 +136,6 @@ char* rtrim(char* str) {
     *(end + 1) = '\0';
 
     return str;
-}
-
-char** split_string(char* str) {
-    char** splits = NULL;
-    char* token = strtok(str, " ");
-
-    int spaces = 0;
-
-    while (token) {
-        splits = realloc(splits, sizeof(char*) * ++spaces);
-
-        if (!splits) {
-            return splits;
-        }
-
-        splits[spaces - 1] = token;
-
-        token = strtok(NULL, " ");
-    }
-
-    return splits;
 }
 
 int parse_int(char* str) {

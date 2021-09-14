@@ -17,58 +17,89 @@ char** split_string(char*);
 int parse_int(char*);
 
 /*
- * Complete the 'designerPdfViewer' function below.
+ * Complete the 'circularArrayRotation' function below.
  *
- * The function is expected to return an INTEGER.
+ * The function is expected to return an INTEGER_ARRAY.
  * The function accepts following parameters:
- *  1. INTEGER_ARRAY h
- *  2. STRING word
+ *  1. INTEGER_ARRAY a
+ *  2. INTEGER k
+ *  3. INTEGER_ARRAY queries
  */
 
-int maximum(int *a, int a_count)
-{
-    int max = a[0];
-    for (int c=1; c<a_count; c++)
-        if (a[c] > max)
-            max = a[c];
-    
-    return max;
-}
- 
+/*
+ * To return the integer array from the function, you should:
+ *     - Store the size of the array to be returned in the result_count variable
+ *     - Allocate the array statically or dynamically
+ *
+ * For example,
+ * int* return_integer_array_using_static_allocation(int* result_count) {
+ *     *result_count = 5;
+ *
+ *     static int a[5] = {1, 2, 3, 4, 5};
+ *
+ *     return a;
+ * }
+ *
+ * int* return_integer_array_using_dynamic_allocation(int* result_count) {
+ *     *result_count = 5;
+ *
+ *     int *a = malloc(5 * sizeof(int));
+ *
+ *     for (int i = 0; i < 5; i++) {
+ *         *(a + i) = i + 1;
+ *     }
+ *
+ *     return a;
+ * }
+ *
+ */
+int* circularArrayRotation(int a_count, int* a, int k, int queries_count, int* queries, int* result_count) {
+    return NULL;
 
-int designerPdfViewer(int h_count, int* h, char* word) {
-    int l = strlen(word), index;
-    int *heights = malloc(sizeof(int)*l);
-    for (int c=0; c<l; c++)
-    {
-        index = (int) word[c] - 97;
-        heights[c] = h[index];
-    }
-    
-    int max = maximum(heights, l);
-    free(heights);
-    return (l*1*max);
 }
 
 int main()
 {
     FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    char** h_temp = split_string(rtrim(readline()));
+    char** first_multiple_input = split_string(rtrim(readline()));
 
-    int* h = malloc(26 * sizeof(int));
+    int n = parse_int(*(first_multiple_input + 0));
 
-    for (int i = 0; i < 26; i++) {
-        int h_item = parse_int(*(h_temp + i));
+    int k = parse_int(*(first_multiple_input + 1));
 
-        *(h + i) = h_item;
+    int q = parse_int(*(first_multiple_input + 2));
+
+    char** a_temp = split_string(rtrim(readline()));
+
+    int* a = malloc(n * sizeof(int));
+
+    for (int i = 0; i < n; i++) {
+        int a_item = parse_int(*(a_temp + i));
+
+        *(a + i) = a_item;
     }
 
-    char* word = readline();
+    int* queries = malloc(q * sizeof(int));
 
-    int result = designerPdfViewer(26, h, word);
+    for (int i = 0; i < q; i++) {
+        int queries_item = parse_int(ltrim(rtrim(readline())));
 
-    fprintf(fptr, "%d\n", result);
+        *(queries + i) = queries_item;
+    }
+
+    int result_count;
+    int* result = circularArrayRotation(n, a, k, q, queries, &result_count);
+
+    for (int i = 0; i < result_count; i++) {
+        fprintf(fptr, "%d", *(result + i));
+
+        if (i != result_count - 1) {
+            fprintf(fptr, "\n");
+        }
+    }
+
+    fprintf(fptr, "\n");
 
     fclose(fptr);
 
@@ -100,7 +131,7 @@ char* readline() {
         data = realloc(data, alloc_length);
 
         if (!data) {
-            data = '\0';
+            data = NULL;
 
             break;
         }
@@ -112,13 +143,13 @@ char* readline() {
         data = realloc(data, data_length);
 
         if (!data) {
-            data = '\0';
+            data = NULL;
         }
     } else {
         data = realloc(data, data_length + 1);
 
         if (!data) {
-            data = '\0';
+            data = NULL;
         } else {
             data[data_length] = '\0';
         }
@@ -129,7 +160,7 @@ char* readline() {
 
 char* ltrim(char* str) {
     if (!str) {
-        return '\0';
+        return NULL;
     }
 
     if (!*str) {
@@ -145,7 +176,7 @@ char* ltrim(char* str) {
 
 char* rtrim(char* str) {
     if (!str) {
-        return '\0';
+        return NULL;
     }
 
     if (!*str) {

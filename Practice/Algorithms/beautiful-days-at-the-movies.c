@@ -17,56 +17,64 @@ char** split_string(char*);
 int parse_int(char*);
 
 /*
- * Complete the 'designerPdfViewer' function below.
+ * Complete the 'beautifulDays' function below.
  *
  * The function is expected to return an INTEGER.
  * The function accepts following parameters:
- *  1. INTEGER_ARRAY h
- *  2. STRING word
+ *  1. INTEGER i
+ *  2. INTEGER j
+ *  3. INTEGER k
  */
 
-int maximum(int *a, int a_count)
+int reverse_number(int c)
 {
-    int max = a[0];
-    for (int c=1; c<a_count; c++)
-        if (a[c] > max)
-            max = a[c];
-    
-    return max;
-}
- 
-
-int designerPdfViewer(int h_count, int* h, char* word) {
-    int l = strlen(word), index;
-    int *heights = malloc(sizeof(int)*l);
-    for (int c=0; c<l; c++)
+    int* number = NULL;
+    int n, counter = 0, copy = c;
+    while (c)
     {
-        index = (int) word[c] - 97;
-        heights[c] = h[index];
+        n = c % 10;
+        number = realloc(number, sizeof(int)*(counter+1));
+        number[counter] = n;
+        counter++;
+        c = c / 10;
     }
-    
-    int max = maximum(heights, l);
-    free(heights);
-    return (l*1*max);
+
+    int p = counter - 1, z = 0;
+    for (int x=0; x<counter; x++)
+    {   
+        z = z + (pow(10, p) * number[x]);
+        p--;
+    }
+    free(number);
+    return z;
+}
+
+
+int beautifulDays(int i, int j, int k)
+{
+    int revc, bday = 0;
+    for (int c = i; c <= j; c++)
+    {
+        revc = reverse_number(c);
+        if (((abs(c-revc)) % k) == 0)
+            bday++;
+    }
+    return bday;
 }
 
 int main()
 {
     FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    char** h_temp = split_string(rtrim(readline()));
+    char** first_multiple_input = split_string(rtrim(readline()));
 
-    int* h = malloc(26 * sizeof(int));
+    int i = parse_int(*(first_multiple_input + 0));
 
-    for (int i = 0; i < 26; i++) {
-        int h_item = parse_int(*(h_temp + i));
+    int j = parse_int(*(first_multiple_input + 1));
 
-        *(h + i) = h_item;
-    }
+    int k = parse_int(*(first_multiple_input + 2));
 
-    char* word = readline();
-
-    int result = designerPdfViewer(26, h, word);
+    int result = beautifulDays(i, j, k);
 
     fprintf(fptr, "%d\n", result);
 
@@ -100,7 +108,7 @@ char* readline() {
         data = realloc(data, alloc_length);
 
         if (!data) {
-            data = '\0';
+            data = NULL;
 
             break;
         }
@@ -112,13 +120,13 @@ char* readline() {
         data = realloc(data, data_length);
 
         if (!data) {
-            data = '\0';
+            data = NULL;
         }
     } else {
         data = realloc(data, data_length + 1);
 
         if (!data) {
-            data = '\0';
+            data = NULL;
         } else {
             data[data_length] = '\0';
         }
@@ -129,7 +137,7 @@ char* readline() {
 
 char* ltrim(char* str) {
     if (!str) {
-        return '\0';
+        return NULL;
     }
 
     if (!*str) {
@@ -145,7 +153,7 @@ char* ltrim(char* str) {
 
 char* rtrim(char* str) {
     if (!str) {
-        return '\0';
+        return NULL;
     }
 
     if (!*str) {
