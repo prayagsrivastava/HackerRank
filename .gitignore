@@ -28,10 +28,11 @@ Practice/Algorithms/electronics-shop
 Practice/Algorithms/cats-and-a-mouse
 Practice/Algorithms/magic-square-forming
 Practice/Algorithms/picking-numbers
+Practice/Algorithms/climbing-the-leaderboard
+Practice/Algorithms/the-hurdle-race
+Practice/Algorithms/designer-pdf-viewer
 
 
-Practice/C/libs
-Practice/C/libs.c
 Practice/C/test.c
 Practice/C/test
 Practice/C/conditional-statements-in-c
@@ -61,3 +62,6 @@ Practice/C/small-triangles-large-triangles
 Practice/C/bitwise-operators-in-c
 
 Makefile
+libs
+libs.c
+.vscode/

@@ -17,10 +17,12 @@ char** split_string(char*);
 int parse_int(char*);
 
 /*
- * Complete the 'pickingNumbers' function below.
+ * Complete the 'hurdleRace' function below.
  *
  * The function is expected to return an INTEGER.
- * The function accepts INTEGER_ARRAY a as parameter.
+ * The function accepts following parameters:
+ *  1. INTEGER k
+ *  2. INTEGER_ARRAY height
  */
 
 int maximum(int *a, int a_count)
@@ -33,46 +35,37 @@ int maximum(int *a, int a_count)
     return max;
 }
 
-int pickingNumbers(int a_count, int* a)
-{
-    int max = maximum(a, a_count);
-    int *numbers = malloc(sizeof(int)*(max+1));
-    for (int c=0; c<=max; c++)
-        numbers[c] = 0;
 
-    for (int c=0; c<a_count; c++)
-        numbers[a[c]]++;
-    
-    int m = 0;
-    for (int c=0; c<a_count; c++)
-    {
-        int d = numbers[a[c]];
-        int e = numbers[a[c]-1];
-        d = d + e;
-        if (d > m)
-            m = d;
-    }
-    free(numbers);
-    return m;
+int hurdleRace(int k, int height_count, int* height)
+{
+    int max = maximum(height, height_count);
+    if ((max-k) < 0)
+        return 0;
+    else
+        return (max-k);
 }
 
 int main()
 {
     FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    int n = parse_int(ltrim(rtrim(readline())));
+    char** first_multiple_input = split_string(rtrim(readline()));
 
-    char** a_temp = split_string(rtrim(readline()));
+    int n = parse_int(*(first_multiple_input + 0));
 
-    int* a = malloc(n * sizeof(int));
+    int k = parse_int(*(first_multiple_input + 1));
+
+    char** height_temp = split_string(rtrim(readline()));
+
+    int* height = malloc(n * sizeof(int));
 
     for (int i = 0; i < n; i++) {
-        int a_item = parse_int(*(a_temp + i));
+        int height_item = parse_int(*(height_temp + i));
 
-        *(a + i) = a_item;
+        *(height + i) = height_item;
     }
 
-    int result = pickingNumbers(n, a);
+    int result = hurdleRace(k, n, height);
 
     fprintf(fptr, "%d\n", result);
 
