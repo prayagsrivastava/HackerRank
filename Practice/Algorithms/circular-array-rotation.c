@@ -53,9 +53,19 @@ int parse_int(char*);
  * }
  *
  */
-int* circularArrayRotation(int a_count, int* a, int k, int queries_count, int* queries, int* result_count) {
-    return NULL;
 
+int* circularArrayRotation(int a_count, int* a, int k, int queries_count, int* queries, int* result_count)
+{
+    int arr1[a_count];
+    for (int d = 0; d < a_count; d++)
+        arr1[(d+1+(k-1))%a_count] = a[d];
+        
+    int *result = malloc(sizeof(int)*queries_count);
+    for (int c=0; c<queries_count; c++)
+        result[c] = arr1[queries[c]];
+    
+    (*result_count) = queries_count;
+    return result;
 }
 
 int main()
