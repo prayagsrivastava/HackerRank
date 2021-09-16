@@ -17,56 +17,46 @@ char** split_string(char*);
 int parse_int(char*);
 
 /*
- * Complete the 'equalizeArray' function below.
+ * Complete the 'taumBday' function below.
  *
- * The function is expected to return an INTEGER.
- * The function accepts INTEGER_ARRAY arr as parameter.
+ * The function is expected to return a LONG_INTEGER.
+ * The function accepts following parameters:
+ *  1. INTEGER b
+ *  2. INTEGER w
+ *  3. INTEGER bc
+ *  4. INTEGER wc
+ *  5. INTEGER z
  */
-int maximum(int *a, int a_count)
-{
-    int max = a[0];
-    for (int c=1; c<a_count; c++)
-        if (a[c] > max)
-            max = a[c];
-    
-    return max;
-}
 
-int equalizeArray(int arr_count, int* arr)
-{
-    int max = maximum(arr, arr_count);
-    max++;
-    int *ar = malloc(sizeof(int)*max);
-    for (int c=0; c<max; c++)
-        ar[c] = 0;
-    
-    for (int c=0; c<arr_count; c++)
-        ar[arr[c]]++;
-    
-    int m = maximum(ar, max);
-    free(ar);
-    return arr_count-m;
+long taumBday(int b, int w, int bc, int wc, int z) {
+
 }
 
 int main()
 {
     FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    int n = parse_int(ltrim(rtrim(readline())));
+    int t = parse_int(ltrim(rtrim(readline())));
 
-    char** arr_temp = split_string(rtrim(readline()));
+    for (int t_itr = 0; t_itr < t; t_itr++) {
+        char** first_multiple_input = split_string(rtrim(readline()));
 
-    int* arr = malloc(n * sizeof(int));
+        int b = parse_int(*(first_multiple_input + 0));
 
-    for (int i = 0; i < n; i++) {
-        int arr_item = parse_int(*(arr_temp + i));
+        int w = parse_int(*(first_multiple_input + 1));
 
-        *(arr + i) = arr_item;
+        char** second_multiple_input = split_string(rtrim(readline()));
+
+        int bc = parse_int(*(second_multiple_input + 0));
+
+        int wc = parse_int(*(second_multiple_input + 1));
+
+        int z = parse_int(*(second_multiple_input + 2));
+
+        long result = taumBday(b, w, bc, wc, z);
+
+        fprintf(fptr, "%ld\n", result);
     }
-
-    int result = equalizeArray(n, arr);
-
-    fprintf(fptr, "%d\n", result);
 
     fclose(fptr);
 

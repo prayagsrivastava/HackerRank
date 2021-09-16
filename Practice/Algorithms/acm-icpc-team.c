@@ -17,11 +17,40 @@ char** split_string(char*);
 int parse_int(char*);
 
 /*
- * Complete the 'equalizeArray' function below.
+ * Complete the 'acmTeam' function below.
  *
- * The function is expected to return an INTEGER.
- * The function accepts INTEGER_ARRAY arr as parameter.
+ * The function is expected to return an INTEGER_ARRAY.
+ * The function accepts STRING_ARRAY topic as parameter.
  */
+
+/*
+ * To return the integer array from the function, you should:
+ *     - Store the size of the array to be returned in the result_count variable
+ *     - Allocate the array statically or dynamically
+ *
+ * For example,
+ * int* return_integer_array_using_static_allocation(int* result_count) {
+ *     *result_count = 5;
+ *
+ *     static int a[5] = {1, 2, 3, 4, 5};
+ *
+ *     return a;
+ * }
+ *
+ * int* return_integer_array_using_dynamic_allocation(int* result_count) {
+ *     *result_count = 5;
+ *
+ *     int *a = malloc(5 * sizeof(int));
+ *
+ *     for (int i = 0; i < 5; i++) {
+ *         *(a + i) = i + 1;
+ *     }
+ *
+ *     return a;
+ * }
+ *
+ */
+
 int maximum(int *a, int a_count)
 {
     int max = a[0];
@@ -32,41 +61,71 @@ int maximum(int *a, int a_count)
     return max;
 }
 
-int equalizeArray(int arr_count, int* arr)
+int* acmTeam(int topic_count, char** topic, int* result_count)
 {
-    int max = maximum(arr, arr_count);
-    max++;
-    int *ar = malloc(sizeof(int)*max);
-    for (int c=0; c<max; c++)
-        ar[c] = 0;
+    int* topics = NULL;
+    char* team1, *team2;
+    int counter = 0, count = 1;
+    for (int c=0; c<topic_count; c++)
+        for (int d=c+1; d<topic_count; d++)
+        {
+            team1 = topic[c];
+            team2 = topic[d];
+            for (int e=0, l = strlen(team1); e<l; e++)
+                if (team1[e] == '1' || team2[e] == '1')
+                    counter++;
+            topics = realloc(topics, sizeof(int)*count);
+            topics[count-1] = counter;
+            count++;
+            counter = 0;
+        }
     
-    for (int c=0; c<arr_count; c++)
-        ar[arr[c]]++;
-    
-    int m = maximum(ar, max);
-    free(ar);
-    return arr_count-m;
+    count--;
+
+    int max = maximum(topics, count);
+    int teams = 0;
+    for (int c=0; c<count; c++)
+        if (topics[c] == max)
+            teams++;
+
+    int *result = malloc(sizeof(int)*2);
+    result[0] = max;
+    result[1] = teams;
+    free(topics);
+    *result_count = 2;
+    return result;
 }
 
 int main()
 {
     FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    int n = parse_int(ltrim(rtrim(readline())));
+    char** first_multiple_input = split_string(rtrim(readline()));
 
-    char** arr_temp = split_string(rtrim(readline()));
+    int n = parse_int(*(first_multiple_input + 0));
 
-    int* arr = malloc(n * sizeof(int));
+    int m = parse_int(*(first_multiple_input + 1));
+
+    char** topic = malloc(n * sizeof(char*));
 
     for (int i = 0; i < n; i++) {
-        int arr_item = parse_int(*(arr_temp + i));
+        char* topic_item = readline();
 
-        *(arr + i) = arr_item;
+        *(topic + i) = topic_item;
     }
 
-    int result = equalizeArray(n, arr);
+    int result_count;
+    int* result = acmTeam(n, topic, &result_count);
 
-    fprintf(fptr, "%d\n", result);
+    for (int i = 0; i < result_count; i++) {
+        fprintf(fptr, "%d", *(result + i));
+
+        if (i != result_count - 1) {
+            fprintf(fptr, "\n");
+        }
+    }
+
+    fprintf(fptr, "\n");
 
     fclose(fptr);
 
