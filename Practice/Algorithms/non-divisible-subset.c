@@ -17,45 +17,72 @@ char** split_string(char*);
 int parse_int(char*);
 
 /*
- * Complete the 'squares' function below.
+ * Complete the 'nonDivisibleSubset' function below.
  *
  * The function is expected to return an INTEGER.
  * The function accepts following parameters:
- *  1. INTEGER a
- *  2. INTEGER b
+ *  1. INTEGER k
+ *  2. INTEGER_ARRAY s
  */
 
-int squares(int a, int b)
+int nonDivisibleSubset(int k, int s_count, int* s)
 {
-    int count = 0, x = 1;
-    while(x*x < a)
-        x++;
+    int *arr = malloc(sizeof(int)*k);
+    for (int c=0; c<k; c++)
+        arr[c] = 0;
     
-    while(x*x <= b)
+    int temp;
+    for (int c=0; c<s_count; c++)
     {
-        count++;
-        x++;
+        temp = s[c];
+        arr[temp%k]++;
     }
-    return count;
+
+    if (arr[0] > 0)
+        temp = 1;
+    else
+        temp = 0;
+    
+    for (int c=1; c<=(k/2); c++)
+    {
+        if (c != k-c)
+        {
+            if (arr[c] > arr[k-c])
+                temp += arr[c];
+            else
+                temp += arr[k-c];
+        }
+        else
+            temp++;
+    }
+    free(arr);
+    return temp;
+
 }
 
 int main()
 {
     FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    int q = parse_int(ltrim(rtrim(readline())));
+    char** first_multiple_input = split_string(rtrim(readline()));
 
-    for (int q_itr = 0; q_itr < q; q_itr++) {
-        char** first_multiple_input = split_string(rtrim(readline()));
+    int n = parse_int(*(first_multiple_input + 0));
 
-        int a = parse_int(*(first_multiple_input + 0));
+    int k = parse_int(*(first_multiple_input + 1));
 
-        int b = parse_int(*(first_multiple_input + 1));
+    char** s_temp = split_string(rtrim(readline()));
 
-        int result = squares(a, b);
+    int* s = malloc(n * sizeof(int));
 
-        fprintf(fptr, "%d\n", result);
+    for (int i = 0; i < n; i++) {
+        int s_item = parse_int(*(s_temp + i));
+
+        *(s + i) = s_item;
     }
+
+    int result = nonDivisibleSubset(k, n, s);
+
+    fprintf(fptr, "%d\n", result);
 
     fclose(fptr);
 
@@ -87,7 +114,7 @@ char* readline() {
         data = realloc(data, alloc_length);
 
         if (!data) {
-            data = NULL;
+            data = '\0';
 
             break;
         }
@@ -99,13 +126,13 @@ char* readline() {
         data = realloc(data, data_length);
 
         if (!data) {
-            data = NULL;
+            data = '\0';
         }
     } else {
         data = realloc(data, data_length + 1);
 
         if (!data) {
-            data = NULL;
+            data = '\0';
         } else {
             data[data_length] = '\0';
         }
@@ -116,7 +143,7 @@ char* readline() {
 
 char* ltrim(char* str) {
     if (!str) {
-        return NULL;
+        return '\0';
     }
 
     if (!*str) {
@@ -132,7 +159,7 @@ char* ltrim(char* str) {
 
 char* rtrim(char* str) {
     if (!str) {
-        return NULL;
+        return '\0';
     }
 
     if (!*str) {

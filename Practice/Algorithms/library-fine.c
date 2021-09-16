@@ -17,45 +17,76 @@ char** split_string(char*);
 int parse_int(char*);
 
 /*
- * Complete the 'squares' function below.
+ * Complete the 'libraryFine' function below.
  *
  * The function is expected to return an INTEGER.
  * The function accepts following parameters:
- *  1. INTEGER a
- *  2. INTEGER b
+ *  1. INTEGER d1
+ *  2. INTEGER m1
+ *  3. INTEGER y1
+ *  4. INTEGER d2
+ *  5. INTEGER m2
+ *  6. INTEGER y2
  */
 
-int squares(int a, int b)
+int libraryFine(int d1, int m1, int y1, int d2, int m2, int y2)
 {
-    int count = 0, x = 1;
-    while(x*x < a)
-        x++;
-    
-    while(x*x <= b)
+    if (y1 < y2)
+        return 0;
+    else if (y1 == y2)
     {
-        count++;
-        x++;
+        if (m1 < m2)
+            return 0;
+        else if (m1 == m2)
+        {
+            if (d1 <= d2)
+                return 0;
+            else
+                return (15 * (d1 - d2));
+        }
+            
     }
-    return count;
+        
+    
+    if (y1 <= y2)
+    {
+        if (m1 <= m2)
+        {
+            if (d1 <= d2)
+                return 0;
+            else
+                return (15 * (d1 - d2));
+        }
+        else
+            return (500 * (m1 - m2));
+    }
+    else
+        return 10000;
 }
 
 int main()
 {
     FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    int q = parse_int(ltrim(rtrim(readline())));
+    char** first_multiple_input = split_string(rtrim(readline()));
 
-    for (int q_itr = 0; q_itr < q; q_itr++) {
-        char** first_multiple_input = split_string(rtrim(readline()));
+    int d1 = parse_int(*(first_multiple_input + 0));
 
-        int a = parse_int(*(first_multiple_input + 0));
+    int m1 = parse_int(*(first_multiple_input + 1));
 
-        int b = parse_int(*(first_multiple_input + 1));
+    int y1 = parse_int(*(first_multiple_input + 2));
 
-        int result = squares(a, b);
+    char** second_multiple_input = split_string(rtrim(readline()));
 
-        fprintf(fptr, "%d\n", result);
-    }
+    int d2 = parse_int(*(second_multiple_input + 0));
+
+    int m2 = parse_int(*(second_multiple_input + 1));
+
+    int y2 = parse_int(*(second_multiple_input + 2));
+
+    int result = libraryFine(d1, m1, y1, d2, m2, y2);
+
+    fprintf(fptr, "%d\n", result);
 
     fclose(fptr);
 

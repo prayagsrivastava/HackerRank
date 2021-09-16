@@ -17,45 +17,35 @@ char** split_string(char*);
 int parse_int(char*);
 
 /*
- * Complete the 'squares' function below.
+ * Complete the 'equalizeArray' function below.
  *
  * The function is expected to return an INTEGER.
- * The function accepts following parameters:
- *  1. INTEGER a
- *  2. INTEGER b
+ * The function accepts INTEGER_ARRAY arr as parameter.
  */
 
-int squares(int a, int b)
-{
-    int count = 0, x = 1;
-    while(x*x < a)
-        x++;
-    
-    while(x*x <= b)
-    {
-        count++;
-        x++;
-    }
-    return count;
+int equalizeArray(int arr_count, int* arr) {
+
 }
 
 int main()
 {
     FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    int q = parse_int(ltrim(rtrim(readline())));
+    int n = parse_int(ltrim(rtrim(readline())));
 
-    for (int q_itr = 0; q_itr < q; q_itr++) {
-        char** first_multiple_input = split_string(rtrim(readline()));
+    char** arr_temp = split_string(rtrim(readline()));
 
-        int a = parse_int(*(first_multiple_input + 0));
+    int* arr = malloc(n * sizeof(int));
 
-        int b = parse_int(*(first_multiple_input + 1));
+    for (int i = 0; i < n; i++) {
+        int arr_item = parse_int(*(arr_temp + i));
 
-        int result = squares(a, b);
-
-        fprintf(fptr, "%d\n", result);
+        *(arr + i) = arr_item;
     }
+
+    int result = equalizeArray(n, arr);
+
+    fprintf(fptr, "%d\n", result);
 
     fclose(fptr);
 
@@ -87,7 +77,7 @@ char* readline() {
         data = realloc(data, alloc_length);
 
         if (!data) {
-            data = NULL;
+            data = '\0';
 
             break;
         }
@@ -99,13 +89,13 @@ char* readline() {
         data = realloc(data, data_length);
 
         if (!data) {
-            data = NULL;
+            data = '\0';
         }
     } else {
         data = realloc(data, data_length + 1);
 
         if (!data) {
-            data = NULL;
+            data = '\0';
         } else {
             data[data_length] = '\0';
         }
@@ -116,7 +106,7 @@ char* readline() {
 
 char* ltrim(char* str) {
     if (!str) {
-        return NULL;
+        return '\0';
     }
 
     if (!*str) {
@@ -132,7 +122,7 @@ char* ltrim(char* str) {
 
 char* rtrim(char* str) {
     if (!str) {
-        return NULL;
+        return '\0';
     }
 
     if (!*str) {

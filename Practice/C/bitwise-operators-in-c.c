@@ -1,10 +1,36 @@
 #include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+//Complete the following function.
 
-int main(void)
 
+void calculate_the_maximum(int n, int k)
 {
-	printf("hello, world!\n");
+	int and_max = 0, or_max = 0, xor_max = 0;
+
+    for (int c = 1; c <= n; c++)
+        for (int d = c+1; d <= n; d++)
+		{
+            if (((c & d) > and_max) && ((c & d) < k))
+				and_max = c & d;
+			
+            if (((c | d) > or_max) && ((c | d) < k))
+                or_max = c | d;
+			
+            if (((c ^ d) > xor_max) && ((c ^ d) < k))
+                xor_max = c ^ d;
+        }
+
+    printf("%i\n%i\n%i\n", and_max, or_max, xor_max);
 }
 
+int main() {
+    int n, k;
+  
+    scanf("%d %d", &n, &k);
+    calculate_the_maximum(n, k);
+ 
+    return 0;
+}
 
-//clang -ggdb3 -O0 -std=c11 -Wall -Werror -Wextra -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wshadow    bitwise-operators-in-c.c  -lcrypt -lm -o bitwise-operators-in-c

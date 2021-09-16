@@ -12,50 +12,52 @@
 char* readline();
 char* ltrim(char*);
 char* rtrim(char*);
-char** split_string(char*);
 
-int parse_int(char*);
+long parse_long(char*);
 
 /*
- * Complete the 'squares' function below.
+ * Complete the 'repeatedString' function below.
  *
- * The function is expected to return an INTEGER.
+ * The function is expected to return a LONG_INTEGER.
  * The function accepts following parameters:
- *  1. INTEGER a
- *  2. INTEGER b
+ *  1. STRING s
+ *  2. LONG_INTEGER n
  */
 
-int squares(int a, int b)
+long repeatedString(char* s, long n)
 {
-    int count = 0, x = 1;
-    while(x*x < a)
-        x++;
+    int l = strlen(s);
+    if (l == 1 && s[0] == 'a')
+        return n;
     
-    while(x*x <= b)
-    {
-        count++;
-        x++;
-    }
-    return count;
+    long counter = 0;
+    for (long c=0; c<l; c++)
+        if (s[c] == 'a')
+            counter++;
+    
+    if (!counter)
+        return 0;
+    
+    counter *= n/l;
+
+    for (long c=0; c<n%l; c++)
+        if (s[c] == 'a')
+            counter++;
+
+    return counter;
 }
 
 int main()
 {
     FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    int q = parse_int(ltrim(rtrim(readline())));
+    char* s = readline();
 
-    for (int q_itr = 0; q_itr < q; q_itr++) {
-        char** first_multiple_input = split_string(rtrim(readline()));
+    long n = parse_long(ltrim(rtrim(readline())));
 
-        int a = parse_int(*(first_multiple_input + 0));
+    long result = repeatedString(s, n);
 
-        int b = parse_int(*(first_multiple_input + 1));
-
-        int result = squares(a, b);
-
-        fprintf(fptr, "%d\n", result);
-    }
+    fprintf(fptr, "%ld\n", result);
 
     fclose(fptr);
 
@@ -87,7 +89,7 @@ char* readline() {
         data = realloc(data, alloc_length);
 
         if (!data) {
-            data = NULL;
+            data = '\0';
 
             break;
         }
@@ -99,13 +101,13 @@ char* readline() {
         data = realloc(data, data_length);
 
         if (!data) {
-            data = NULL;
+            data = '\0';
         }
     } else {
         data = realloc(data, data_length + 1);
 
         if (!data) {
-            data = NULL;
+            data = '\0';
         } else {
             data[data_length] = '\0';
         }
@@ -116,7 +118,7 @@ char* readline() {
 
 char* ltrim(char* str) {
     if (!str) {
-        return NULL;
+        return '\0';
     }
 
     if (!*str) {
@@ -132,7 +134,7 @@ char* ltrim(char* str) {
 
 char* rtrim(char* str) {
     if (!str) {
-        return NULL;
+        return '\0';
     }
 
     if (!*str) {
@@ -150,30 +152,9 @@ char* rtrim(char* str) {
     return str;
 }
 
-char** split_string(char* str) {
-    char** splits = NULL;
-    char* token = strtok(str, " ");
-
-    int spaces = 0;
-
-    while (token) {
-        splits = realloc(splits, sizeof(char*) * ++spaces);
-
-        if (!splits) {
-            return splits;
-        }
-
-        splits[spaces - 1] = token;
-
-        token = strtok(NULL, " ");
-    }
-
-    return splits;
-}
-
-int parse_int(char* str) {
+long parse_long(char* str) {
     char* endptr;
-    int value = strtol(str, &endptr, 10);
+    long value = strtol(str, &endptr, 10);
 
     if (endptr == str || *endptr != '\0') {
         exit(EXIT_FAILURE);

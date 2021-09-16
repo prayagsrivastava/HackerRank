@@ -45,6 +45,12 @@ Practice/Algorithms/find-digits
 Practice/Algorithms/extra-long-factorials
 Practice/Algorithms/append-and-delete
 Practice/Algorithms/sherlock-and-squares
+Practice/Algorithms/library-fine
+Practice/Algorithms/cut-the-sticks
+Practice/Algorithms/non-divisible-subset
+Practice/Algorithms/repeated-string
+Practice/Algorithms/jumping-on-the-clouds
+Practice/Algorithms/equality-in-a-array
 
 
 Practice/C/test.c
@@ -79,3 +85,5 @@ Makefile
 libs
 libs.c
 .vscode/
+permutations.c
+permutations
