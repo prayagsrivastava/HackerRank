@@ -95,3 +95,4 @@ libs.c
 .vscode/
 permutations.c
 permutations
+partition.c
