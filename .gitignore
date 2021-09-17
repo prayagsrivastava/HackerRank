@@ -96,3 +96,4 @@ libs.c
 permutations.c
 permutations
 partition.c
+partition
