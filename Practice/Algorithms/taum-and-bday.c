@@ -28,8 +28,14 @@ int parse_int(char*);
  *  5. INTEGER z
  */
 
-long taumBday(int b, int w, int bc, int wc, int z) {
-
+long taumBday(int b, int w, int bc, int wc, int z)
+{
+    if ((bc + z) < wc)
+        return (((long)bc * (long)b) + (((long)bc + (long)z) * (long)w));
+    else if ((wc + z) < bc)
+        return (((long)wc * (long)w) + (((long)wc + (long)z) * (long)b));
+    else
+        return (((long)b * (long)bc) + ((long)w * (long)wc));
 }
 
 int main()
