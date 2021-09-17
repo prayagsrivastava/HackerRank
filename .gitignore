@@ -93,7 +93,3 @@ Makefile
 libs
 libs.c
 .vscode/
-permutations.c
-permutations
-partition.c
-partition
