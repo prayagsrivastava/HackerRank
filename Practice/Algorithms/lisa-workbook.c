@@ -17,54 +17,42 @@ char** split_string(char*);
 int parse_int(char*);
 
 /*
- * Complete the 'chocolateFeast' function below.
+ * Complete the 'workbook' function below.
  *
  * The function is expected to return an INTEGER.
  * The function accepts following parameters:
  *  1. INTEGER n
- *  2. INTEGER c
- *  3. INTEGER m
+ *  2. INTEGER k
+ *  3. INTEGER_ARRAY arr
  */
 
-int chocolateFeast(int n, int c, int m)
-{
-    int bars = 0, wrappers = 0, temp;
-    while(1)
-    {
-        temp = (n/c);
-        bars += temp;
-        wrappers += temp;
-        n = n - (temp*c);
-        if (wrappers >= m)
-        {   
-            n += c;
-            wrappers -= m;
-        }
-        else 
-            break;
-    }
-    return bars;
+int workbook(int n, int k, int arr_count, int* arr) {
+
 }
 
 int main()
 {
     FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    int t = parse_int(ltrim(rtrim(readline())));
+    char** first_multiple_input = split_string(rtrim(readline()));
 
-    for (int t_itr = 0; t_itr < t; t_itr++) {
-        char** first_multiple_input = split_string(rtrim(readline()));
+    int n = parse_int(*(first_multiple_input + 0));
 
-        int n = parse_int(*(first_multiple_input + 0));
+    int k = parse_int(*(first_multiple_input + 1));
 
-        int c = parse_int(*(first_multiple_input + 1));
+    char** arr_temp = split_string(rtrim(readline()));
 
-        int m = parse_int(*(first_multiple_input + 2));
+    int* arr = malloc(n * sizeof(int));
 
-        int result = chocolateFeast(n, c, m);
+    for (int i = 0; i < n; i++) {
+        int arr_item = parse_int(*(arr_temp + i));
 
-        fprintf(fptr, "%d\n", result);
+        *(arr + i) = arr_item;
     }
+
+    int result = workbook(n, k, n, arr);
+
+    fprintf(fptr, "%d\n", result);
 
     fclose(fptr);
 
