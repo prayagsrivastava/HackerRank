@@ -17,76 +17,54 @@ char** split_string(char*);
 int parse_int(char*);
 
 /*
- * Complete the 'workbook' function below.
+ * Complete the 'fairRations' function below.
  *
- * The function is expected to return an INTEGER.
- * The function accepts following parameters:
- *  1. INTEGER n
- *  2. INTEGER k
- *  3. INTEGER_ARRAY arr
+ * The function is expected to return a STRING.
+ * The function accepts INTEGER_ARRAY B as parameter.
  */
 
-int workbook(int n, int k, int arr_count, int* arr)
-{
-    int page_num = 0, last = 0, p, count = 0, p1 = 0, result = 0, temp;
-    for (int c=0; c<n; c++)
-    {
-        if (arr[c] <= k)
-            page_num++;
-        else
-        {
-            temp = arr[c];
-            do
-            {
-                temp -= k;
-                page_num++;
+/*
+ * To return the string from the function, you should either do static allocation or dynamic allocation
+ *
+ * For example,
+ * char* return_string_using_static_allocation() {
+ *     static char s[] = "static allocation of string";
+ *
+ *     return s;
+ * }
+ *
+ * char* return_string_using_dynamic_allocation() {
+ *     char* s = malloc(100 * sizeof(char));
+ *
+ *     s = "dynamic allocation of string";
+ *
+ *     return s;
+ * }
+ *
+ */
+char* fairRations(int B_count, int* B) {
 
-            } while (temp >0);
-        }
-        p = arr[c];
-        for (int d = last+1; d < page_num+1; d++)
-        {
-            if (p > k)
-                count += k;
-            else
-                count = arr[c];
-
-            if (d >= (p1+1) && d <=count)
-                result++;
-            
-            p = p - k;
-            p1 = count;
-        }
-        count = 0;
-        p1 = 0;
-        last = page_num;
-    }
-    return result;
 }
 
 int main()
 {
     FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    char** first_multiple_input = split_string(rtrim(readline()));
+    int N = parse_int(ltrim(rtrim(readline())));
 
-    int n = parse_int(*(first_multiple_input + 0));
+    char** B_temp = split_string(rtrim(readline()));
 
-    int k = parse_int(*(first_multiple_input + 1));
+    int* B = malloc(N * sizeof(int));
 
-    char** arr_temp = split_string(rtrim(readline()));
+    for (int i = 0; i < N; i++) {
+        int B_item = parse_int(*(B_temp + i));
 
-    int* arr = malloc(n * sizeof(int));
-
-    for (int i = 0; i < n; i++) {
-        int arr_item = parse_int(*(arr_temp + i));
-
-        *(arr + i) = arr_item;
+        *(B + i) = B_item;
     }
 
-    int result = workbook(n, k, n, arr);
+    char* result = fairRations(N, B);
 
-    fprintf(fptr, "%d\n", result);
+    fprintf(fptr, "%s\n", result);
 
     fclose(fptr);
 
