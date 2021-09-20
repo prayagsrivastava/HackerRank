@@ -16,34 +16,83 @@ char** split_string(char*);
 
 int parse_int(char*);
 
-/*
- * Complete the 'fairRations' function below.
- *
- * The function is expected to return a STRING.
- * The function accepts INTEGER_ARRAY B as parameter.
- */
+char* reverse_string(char* s)
+{
+    int l = strlen(s), counter = 0;
+    char* news = malloc(sizeof(char)*(l+1));
+    for (int c=l-1; c>=0; c--)
+    {
+        news[counter] = s[c];
+        counter++;
+    }
+    news[l] = '\0';
+    free(s);
+    return news;
+}
 
-/*
- * To return the string from the function, you should either do static allocation or dynamic allocation
- *
- * For example,
- * char* return_string_using_static_allocation() {
- *     static char s[] = "static allocation of string";
- *
- *     return s;
- * }
- *
- * char* return_string_using_dynamic_allocation() {
- *     char* s = malloc(100 * sizeof(char));
- *
- *     s = "dynamic allocation of string";
- *
- *     return s;
- * }
- *
- */
-char* fairRations(int B_count, int* B) {
+char* itos(int s)
+{
+    char* string = NULL;
+    if (s == 0)
+    {
+        string = malloc(sizeof(char)*2);
+        string[0] = '0';
+        string[1] = '\0';
+        return string;
+    }
+    
+    int multiple = 10, counter = 0, temp;
+    while(s)
+    {
+        temp = (s % multiple);
+        if (temp == s && counter == 0)
+        {
+            string = malloc(sizeof(char)*2);
+            string[0] = (char) (temp + 48);
+            string[1] = '\0';
+            return string;
+        }
+        else
+        {
+            string = realloc(string, sizeof(char)*(counter+2));
+            string[counter] = (char) (temp + 48);
+            string[counter+1] = '\0';
+            counter++;
+        }
+        s = s / multiple;
+    }
 
+    if (strlen(string) > 1)
+        return reverse_string(string);
+    else
+        return string;
+}
+
+char* fairRations(int B_count, int* B)
+{
+    int loaf = 0;
+    for (int c = 0; c < (B_count); c++)
+    {
+        if ((B[c] % 2) != 0)
+        {
+            if (c && ((B[c-1]%2) != 0))
+            {
+                B[c]++;
+                B[c-1]++;
+                loaf += 2;
+            }
+            else if ((c+1) < B_count)
+            {
+                B[c]++;
+                B[c+1]++;
+                loaf += 2;
+            }
+        }
+    }
+    if ((B[B_count-1] % 2) == 0)
+        return itos(loaf);
+    else
+        return "NO";
 }
 
 int main()
