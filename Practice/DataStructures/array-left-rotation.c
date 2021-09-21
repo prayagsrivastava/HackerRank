@@ -17,12 +17,12 @@ char** split_string(char*);
 int parse_int(char*);
 
 /*
- * Complete the 'dynamicArray' function below.
+ * Complete the 'rotateLeft' function below.
  *
  * The function is expected to return an INTEGER_ARRAY.
  * The function accepts following parameters:
- *  1. INTEGER n
- *  2. 2D_INTEGER_ARRAY queries
+ *  1. INTEGER d
+ *  2. INTEGER_ARRAY arr
  */
 
 /*
@@ -52,8 +52,16 @@ int parse_int(char*);
  * }
  *
  */
-int* dynamicArray(int n, int queries_rows, int queries_columns, int** queries, int* result_count) {
-
+int* rotateLeft(int d, int arr_count, int* arr, int* result_count)
+{
+    int *a = malloc(sizeof(int)*arr_count);
+    for (int c=arr_count-1; c>=0; c--)
+    {
+        a[arr_count-1-(d%arr_count)] = arr[c];
+        d++;
+    }
+    *result_count = arr_count;
+    return a;
 }
 
 int main()
@@ -64,30 +72,26 @@ int main()
 
     int n = parse_int(*(first_multiple_input + 0));
 
-    int q = parse_int(*(first_multiple_input + 1));
+    int d = parse_int(*(first_multiple_input + 1));
 
-    int** queries = malloc(q * sizeof(int*));
+    char** arr_temp = split_string(rtrim(readline()));
 
-    for (int i = 0; i < q; i++) {
-        *(queries + i) = malloc(3 * (sizeof(int)));
+    int* arr = malloc(n * sizeof(int));
 
-        char** queries_item_temp = split_string(rtrim(readline()));
+    for (int i = 0; i < n; i++) {
+        int arr_item = parse_int(*(arr_temp + i));
 
-        for (int j = 0; j < 3; j++) {
-            int queries_item = parse_int(*(queries_item_temp + j));
-
-            *(*(queries + i) + j) = queries_item;
-        }
+        *(arr + i) = arr_item;
     }
 
     int result_count;
-    int* result = dynamicArray(n, q, 3, queries, &result_count);
+    int* result = rotateLeft(d, n, arr, &result_count);
 
     for (int i = 0; i < result_count; i++) {
         fprintf(fptr, "%d", *(result + i));
 
         if (i != result_count - 1) {
-            fprintf(fptr, "\n");
+            fprintf(fptr, " ");
         }
     }
 
