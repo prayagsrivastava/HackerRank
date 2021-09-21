@@ -13,71 +13,37 @@ char* readline();
 char* ltrim(char*);
 char* rtrim(char*);
 
-int parse_int(char*);
+long parse_long(char*);
 
 /*
- * Complete the 'happyLadybugs' function below.
+ * Complete the 'strangeCounter' function below.
  *
- * The function is expected to return a STRING.
- * The function accepts STRING b as parameter.
+ * The function is expected to return a LONG_INTEGER.
+ * The function accepts LONG_INTEGER t as parameter.
  */
 
-/*
- * To return the string from the function, you should either do static allocation or dynamic allocation
- *
- * For example,
- * char* return_string_using_static_allocation() {
- *     static char s[] = "static allocation of string";
- *
- *     return s;
- * }
- *
- * char* return_string_using_dynamic_allocation() {
- *     char* s = malloc(100 * sizeof(char));
- *
- *     s = "dynamic allocation of string";
- *
- *     return s;
- * }
- *
- */
-int countof_item_str_array(char* arr, char item)
+long strangeCounter(long t)
 {
-    int count = 0;
-    for (int c=0; arr[c]!='\0'; c++)
-        if (arr[c] == item)
-            count++;
-    return count;
-}
-
-char* happyLadybugs(char* b)
-{
-    for (int c=0; b[c] != '\0'; c++)
-        if ((b[c] != '_') && (countof_item_str_array(b, b[c])) == 1)
-            return "NO";
-    
-    if (countof_item_str_array(b, '_') == 0)
-        for (int c = 1, l = strlen(b); c < l - 1; c++)
-            if ((b[c-1] != b[c]) && (b[c+1] != b[c]))
-                return "NO";
-    return "YES";
+    long time = 1, value = 3;
+    while ((time + value) <= t)
+    {
+        time += value;
+        value = value * 2;
+    }
+    for (long c = (time+1); c <= t; c++)
+        value--;
+    return value;
 }
 
 int main()
 {
     FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    int g = parse_int(ltrim(rtrim(readline())));
+    long t = parse_long(ltrim(rtrim(readline())));
 
-    for (int g_itr = 0; g_itr < g; g_itr++) {
-        int n = parse_int(ltrim(rtrim(readline())));
+    long result = strangeCounter(t);
 
-        char* b = readline();
-
-        char* result = happyLadybugs(b);
-
-        fprintf(fptr, "%s\n", result);
-    }
+    fprintf(fptr, "%ld\n", result);
 
     fclose(fptr);
 
@@ -172,9 +138,9 @@ char* rtrim(char* str) {
     return str;
 }
 
-int parse_int(char* str) {
+long parse_long(char* str) {
     char* endptr;
-    int value = strtol(str, &endptr, 10);
+    long value = strtol(str, &endptr, 10);
 
     if (endptr == str || *endptr != '\0') {
         exit(EXIT_FAILURE);

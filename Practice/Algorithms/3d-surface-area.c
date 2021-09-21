@@ -12,72 +12,71 @@
 char* readline();
 char* ltrim(char*);
 char* rtrim(char*);
+char** split_string(char*);
 
 int parse_int(char*);
 
 /*
- * Complete the 'happyLadybugs' function below.
+ * Complete the 'surfaceArea' function below.
  *
- * The function is expected to return a STRING.
- * The function accepts STRING b as parameter.
+ * The function is expected to return an INTEGER.
+ * The function accepts 2D_INTEGER_ARRAY A as parameter.
  */
 
-/*
- * To return the string from the function, you should either do static allocation or dynamic allocation
- *
- * For example,
- * char* return_string_using_static_allocation() {
- *     static char s[] = "static allocation of string";
- *
- *     return s;
- * }
- *
- * char* return_string_using_dynamic_allocation() {
- *     char* s = malloc(100 * sizeof(char));
- *
- *     s = "dynamic allocation of string";
- *
- *     return s;
- * }
- *
- */
-int countof_item_str_array(char* arr, char item)
+int surfaceArea(int A_rows, int A_columns, int** A)
 {
-    int count = 0;
-    for (int c=0; arr[c]!='\0'; c++)
-        if (arr[c] == item)
-            count++;
-    return count;
-}
-
-char* happyLadybugs(char* b)
-{
-    for (int c=0; b[c] != '\0'; c++)
-        if ((b[c] != '_') && (countof_item_str_array(b, b[c])) == 1)
-            return "NO";
-    
-    if (countof_item_str_array(b, '_') == 0)
-        for (int c = 1, l = strlen(b); c < l - 1; c++)
-            if ((b[c-1] != b[c]) && (b[c+1] != b[c]))
-                return "NO";
-    return "YES";
+    int count = 0, temp1 = 0, temp2 = 0;
+    for (int c = 0; c < A_rows; c++)
+    {
+        for (int d = 0; d < A_columns; d++)
+        {
+            if ((A[c][d] - count) >= 0)
+                temp1 += (A[c][d] - count);
+            count = A[c][d];
+        }
+        count = 0;
+    }
+    count = 0;
+    for (int c = 0; c < A_columns; c++)
+    {
+        for (int d = 0; d < A_rows; d++)
+        {
+            if ((A[d][c]-count) >= 0)
+                temp2 += (A[d][c]-count);
+            count = A[d][c];
+        }
+        count = 0;
+    }
+    return ((2*temp1)+(2*temp2)+(2*A_rows*A_columns));
 }
 
 int main()
 {
     FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    int g = parse_int(ltrim(rtrim(readline())));
+    char** first_multiple_input = split_string(rtrim(readline()));
 
-    for (int g_itr = 0; g_itr < g; g_itr++) {
-        int n = parse_int(ltrim(rtrim(readline())));
+    int H = parse_int(*(first_multiple_input + 0));
 
-        char* b = readline();
+    int W = parse_int(*(first_multiple_input + 1));
 
-        char* result = happyLadybugs(b);
+    int** A = malloc(H * sizeof(int*));
 
-        fprintf(fptr, "%s\n", result);
+    for (int i = 0; i < H; i++) {
+        *(A + i) = malloc(W * (sizeof(int)));
+
+        char** A_item_temp = split_string(rtrim(readline()));
+
+        for (int j = 0; j < W; j++) {
+            int A_item = parse_int(*(A_item_temp + j));
+
+            *(*(A + i) + j) = A_item;
+        }
     }
+
+    int result = surfaceArea(H, W, A);
+
+    fprintf(fptr, "%d\n", result);
 
     fclose(fptr);
 
@@ -170,6 +169,27 @@ char* rtrim(char* str) {
     *(end + 1) = '\0';
 
     return str;
+}
+
+char** split_string(char* str) {
+    char** splits = NULL;
+    char* token = strtok(str, " ");
+
+    int spaces = 0;
+
+    while (token) {
+        splits = realloc(splits, sizeof(char*) * ++spaces);
+
+        if (!splits) {
+            return splits;
+        }
+
+        splits[spaces - 1] = token;
+
+        token = strtok(NULL, " ");
+    }
+
+    return splits;
 }
 
 int parse_int(char* str) {
