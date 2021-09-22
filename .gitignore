@@ -88,6 +88,7 @@ Practice/DataStructures/array-left-rotation
 Practice/DataStructures/sparse-arrays
 Practice/DataStructures/crush
 Practice/DataStructures/maximum-cost-queries
+Practice/DataStructures/tree-top-view
 
 
 
@@ -119,6 +120,8 @@ Practice/C/too-high-boxes
 Practice/C/small-triangles-large-triangles
 Practice/C/bitwise-operators-in-c
 
+
+Practice/Python/env/
 Makefile
 libs
 libs.c
