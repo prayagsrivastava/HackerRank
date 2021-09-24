@@ -1,3 +1,6 @@
-if __name__ == '__main__':
-    n = list(map(int, input().split()))
-    print(n)
+m, ml, n, nl = int(input()), set(map(int, input().split())), int(input()), set(map(int, input().split()))
+c = nl.difference(ml)
+d = ml.difference(nl)
+c.update(d)
+for i in sorted(c):
+    print(i)
