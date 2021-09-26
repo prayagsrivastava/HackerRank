@@ -123,9 +123,11 @@ Practice/C/bitwise-operators-in-c
 
 
 Practice/Python/env/
+Contests/projecteuler/env/
 Makefile
 libs
 libs.c
 .vscode/
 array
 array.c
+Contests/
