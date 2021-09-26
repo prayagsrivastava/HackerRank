@@ -127,3 +127,5 @@ Makefile
 libs
 libs.c
 .vscode/
+arrays
+arrays.c
