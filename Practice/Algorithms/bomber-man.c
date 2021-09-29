@@ -58,9 +58,108 @@ int parse_int(char*);
  * }
  *
  */
-char** bomberMan(int n, int grid_count, char** grid, int* result_count) {
+void plantbombs(char**, int, int);
+char** detonate(char**, int, int);
+char** grid_copy(int, int);
+void free_grid(char** grid, int rows, int columns);
 
+
+char** bomberMan(int n, int grid_count, char** grid, int* result_count)
+{
+    int columns = strlen(grid[0]);
+    int rows = grid_count;
+
+    (*result_count) = grid_count;
+
+    if (n == 1)
+        return grid;
+    else if ((n % 2) == 0)
+    {
+        plantbombs(grid, rows, columns);
+        return grid;
+    }
+    
+    char** newgrid1 = detonate(grid, rows, columns);
+    char** newgrid2 = detonate(newgrid1, rows, columns);
+
+    if ((n + 1)%4 == 0)
+    {
+        free_grid(newgrid2, rows, columns);
+        return newgrid1;
+    }
+    else
+    {
+        free_grid(newgrid1, rows, columns);
+        return newgrid2;
+    }
 }
+
+void plantbombs(char** grid, int rows, int columns)
+{
+    for (int r = 0; r < rows; r++)
+        for (int c = 0; c < columns; c++)
+            grid[r][c] = 'O';
+    return;
+}
+
+
+char** detonate(char** grid, int rows, int columns)
+{
+    char** newgrid = grid_copy(rows, columns);
+    for (int r = 0; r < rows; r++)
+        for (int c = 0; c < columns; c++)
+            if (grid[r][c] == 'O')
+            {
+                newgrid[r][c] = '.';
+                if (((r + 1) < rows) && ((r - 1) >= 0))
+                {
+                    newgrid[r + 1][c] = '.';
+                    newgrid[r - 1][c] = '.';
+                }
+                else if ((r + 1) < rows)
+                    newgrid[r + 1][c] = '.';
+                else if ((r - 1) >= 0)
+                    newgrid[r - 1][c] = '.';
+                
+                if (((c + 1) < columns) && ((c - 1) >= 0))
+                {
+                    newgrid[r][c + 1] = '.';
+                    newgrid[r][c - 1] = '.';
+                }
+                else if ((c + 1) < columns)
+                    newgrid[r][c + 1] = '.';
+                else if ((c - 1) >= 0)
+                    newgrid[r][c - 1] = '.';
+            }
+    return newgrid;
+}
+
+
+char** grid_copy(int rows, int columns)
+{
+    char** newgrid = malloc(sizeof(char*)*rows);
+    for (int r = 0; r < rows; r++)
+    {
+        newgrid[r] = malloc(sizeof(char)*(columns+1));
+        for (int c = 0; c < columns; c++)
+            newgrid[r][c] = 'O';
+        newgrid[r][columns] = '\0';
+    }
+    return newgrid;
+}
+
+
+void free_grid(char** grid, int rows, int columns)
+{
+    for (int c=0; c<rows; c++)
+        free(grid[c]);
+    free(grid);
+    return;
+}
+
+ 
+ 
+
 
 int main()
 {
