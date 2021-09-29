@@ -79,8 +79,9 @@ Practice/Algorithms/bomber-man
 
 
 Practice/DataStructures/test
-Practice/DataStructures/test.py
 Practice/DataStructures/test.c
+Practice/DataStructures/test1.c
+Practice/DataStructures/test1
 Practice/DataStructures/arrays-ds
 Practice/DataStructures/2d-array
 Practice/DataStructures/dynamic-array
@@ -99,6 +100,12 @@ Practice/DataStructures/print-the-elements-of-a-linked-list-in-reverse
 Practice/DataStructures/reverse-a-linked-list
 Practice/DataStructures/compare-two-linked-lists
 Practice/DataStructures/merge-two-sorted-linked-lists
+Practice/DataStructures/get-the-value-of-the-node-at-a-specific-position-from-the-tail
+Practice/DataStructures/delete-duplicate-value-nodes-from-a-sorted-linked-list
+Practice/DataStructures/cycle-detection
+Practice/DataStructures/find-the-merge-point-of-two-joined-linked-lists
+Practice/DataStructures/insert-a-node-into-a-sorted-doubly-linked-list
+Practice/DataStructures/reverse-a-doubly-linked-list
 
 
 

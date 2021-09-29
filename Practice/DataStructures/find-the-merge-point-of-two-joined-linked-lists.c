@@ -65,7 +65,7 @@ void free_singly_linked_list(SinglyLinkedListNode* node) {
     }
 }
 
-// Complete the mergeLists function below.
+// Complete the findMergeNode function below.
 
 /*
  * For your reference:
@@ -76,53 +76,53 @@ void free_singly_linked_list(SinglyLinkedListNode* node) {
  * };
  *
  */
-
-void isort_llist(SinglyLinkedListNode* head)
+int getCount(SinglyLinkedListNode*);
+int getMergeNode(int, SinglyLinkedListNode*, SinglyLinkedListNode*);
+int findMergeNode(SinglyLinkedListNode* head1, SinglyLinkedListNode* head2)
 {
-    if (!head || (*head).next == NULL)
-        return;
-
-    SinglyLinkedListNode* c, *d;
-    int temp;
-    for (c = head; c != NULL; c = (*c).next)
+    int c1 = getCount(head1);
+    int c2 = getCount(head2);
+    if (c1 > c2)
     {
-        for (d = (*c).next; d != NULL; d = (*d).next)
-        {
-            if ((*c).data > (*d).data)
-            {
-                temp = (*c).data;
-                (*c).data = (*d).data;
-                (*d).data = temp;
-            }
-        }
+        int d = c1 - c2;
+        return getMergeNode(d, head1, head2);
     }
-    return;
+    else
+    {
+        int d = c2- c1;
+        return getMergeNode(d, head2, head1);
+    }
 }
 
-SinglyLinkedListNode* insertNodeAtHead(SinglyLinkedListNode* llist, int data)
+int getMergeNode(int d, SinglyLinkedListNode* head1, SinglyLinkedListNode* head2)
 {
-    SinglyLinkedListNode* n = malloc(sizeof(SinglyLinkedListNode));
-    (*n).data = data;
-    (*n).next = llist;
-    return n;
+    SinglyLinkedListNode* a = head1;
+    SinglyLinkedListNode* b = head2;
+    
+    for (int c=0; c<d; c++)
+        a = (*a).next;
+    
+    while (a != NULL && b != NULL)
+    {
+        if (a == b)
+            return (*a).data;
+        a = (*a).next;
+        b = (*b).next;
+    }
+    return -1;
 }
 
-SinglyLinkedListNode* mergeLists(SinglyLinkedListNode* head1, SinglyLinkedListNode* head2)
+int getCount(SinglyLinkedListNode* head)
 {
-    SinglyLinkedListNode* temp = head1, *newlist = NULL;
-    while(temp)
+    SinglyLinkedListNode* a = head;
+    int count = 0;
+    while(a != NULL)
     {
-        newlist = insertNodeAtHead(newlist, (*temp).data);
-        temp = (*temp).next;
+        count++;
+        a = (*a).next;
     }
-    temp = head2;
-    while(temp)
-    {
-        newlist = insertNodeAtHead(newlist, (*temp).data);
-        temp = (*temp).next;
-    }
-    isort_llist(newlist);
-    return newlist;
+    return count;
+    
 }
 
 int main()
@@ -136,6 +136,12 @@ int main()
     if (tests_endptr == tests_str || *tests_endptr != '\0') { exit(EXIT_FAILURE); }
 
     for (int tests_itr = 0; tests_itr < tests; tests_itr++) {
+        char* index_endptr;
+        char* index_str = readline();
+        int index = strtol(index_str, &index_endptr, 10);
+
+        if (index_endptr == index_str || *index_endptr != '\0') { exit(EXIT_FAILURE); }
+
         SinglyLinkedList* llist1 = malloc(sizeof(SinglyLinkedList));
         llist1->head = NULL;
         llist1->tail = NULL;
@@ -175,15 +181,27 @@ int main()
 
             insert_node_into_singly_linked_list(&llist2, llist2_item);
         }
+      
+      	SinglyLinkedListNode* ptr1 = llist1->head;
+      	SinglyLinkedListNode* ptr2 = llist2->head;
+      
+      	for (int i = 0; i < llist1_count; i++) {
+            if (i < index) {
+          		ptr1 = ptr1->next;
+            }
+        }
+      
+      	for (int i = 0; i < llist2_count; i++) {
+          	if (i != llist2_count-1) {
+          		ptr2 = ptr2->next;
+            }
+        }
+      
+      	ptr2->next = ptr1;
 
-        SinglyLinkedListNode* llist3 = mergeLists(llist1->head, llist2->head);
+        int result = findMergeNode(llist1->head, llist2->head);
 
-        char *sep = " ";
-
-        print_singly_linked_list(llist3, sep, fptr);
-        fprintf(fptr, "\n");
-
-        free_singly_linked_list(llist3);
+        fprintf(fptr, "%d\n", result);
     }
 
     fclose(fptr);
