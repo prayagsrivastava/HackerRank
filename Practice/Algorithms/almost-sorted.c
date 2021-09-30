@@ -17,76 +17,107 @@ char** split_string(char*);
 int parse_int(char*);
 
 /*
- * Complete the 'larrysArray' function below.
+ * Complete the 'almostSorted' function below.
  *
- * The function is expected to return a STRING.
- * The function accepts INTEGER_ARRAY A as parameter.
+ * The function accepts INTEGER_ARRAY arr as parameter.
  */
 
-/*
- * To return the string from the function, you should either do static allocation or dynamic allocation
- *
- * For example,
- * char* return_string_using_static_allocation() {
- *     static char s[] = "static allocation of string";
- *
- *     return s;
- * }
- *
- * char* return_string_using_dynamic_allocation() {
- *     char* s = malloc(100 * sizeof(char));
- *
- *     s = "dynamic allocation of string";
- *
- *     return s;
- * }
- *
- */
-char* larrysArray(int A_count, int* A)
+void reverse_array(int *arr, int index1, int index2)
 {
-    int count, sum = 0;
-    for (int x = 0; x < (A_count - 1); x++)
+    if (index1 == index2)
+        return;
+
+    int temp, start = index1;
+    for (int c = index2; c >= index1; c--)
     {
-        count = 0;
-        for (int y = (x + 1); y < A_count; y++)
-        {
-            if (A[x] > A[y])
-                count++;
-        }
-        sum += count;
+        if (start >= c)
+            break;
+        temp = arr[c];
+        arr[c] = arr[start];
+        arr[start] = temp;
+        start++;
+    }
+    return;
+}
+
+
+int is_sorted(int *arr, int arr_count)
+{
+    for (int c=0; c<arr_count-1; c++)
+        if (arr[c] > arr[c+1])
+            return 0;
+    return 1;
+}
+
+void almostSorted(int arr_count, int* arr)
+{
+    if (is_sorted(arr, arr_count))
+    {
+        printf("yes\n");
+        return;
+    }
+    else if (arr_count == 2)
+    {
+        printf("yes\nswap 1 2\n");
+        return;
     }
 
-    if ((sum % 2) == 0)
-        return "YES";
+    int index1, index2;
+    for (index1 = 0; index1 < (arr_count - 1); index1++)
+        if (arr[index1] > arr[index1+1])
+            break;
+    
+    for (index2 = (index1 + 1); index2 < arr_count; index2++)
+        if (arr[index1] < arr[index2])
+            break;
+    
+    if (index2 >= arr_count || index1 >= (arr_count - 1))
+    {
+        printf("no\n");
+        return;
+    }
+    
+    index2--;
+    int temp = arr[index2];
+    arr[index2] = arr[index1];
+    arr[index1] = temp;
+    
+    if (is_sorted(arr, arr_count))
+    {
+        printf("yes\nswap %i %i\n", (index1 + 1), (index2 + 1));
+        return;
+    }
     else
-        return "NO";
+    {
+        temp = arr[index2];
+        arr[index2] = arr[index1];
+        arr[index1] = temp;
+    }
+    
+    reverse_array(arr, index1, index2);
+    if (is_sorted(arr, arr_count))
+    {
+        printf("yes\nreverse %i %i\n", (index1 + 1), (index2 + 1));
+        return;
+    }
+    printf("no\n");
 }
 
 int main()
 {
-    FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
+    int n = parse_int(ltrim(rtrim(readline())));
 
-    int t = parse_int(ltrim(rtrim(readline())));
+    char** arr_temp = split_string(rtrim(readline()));
 
-    for (int t_itr = 0; t_itr < t; t_itr++) {
-        int n = parse_int(ltrim(rtrim(readline())));
+    int* arr = malloc(n * sizeof(int));
 
-        char** A_temp = split_string(rtrim(readline()));
+    for (int i = 0; i < n; i++) {
+        int arr_item = parse_int(*(arr_temp + i));
 
-        int* A = malloc(n * sizeof(int));
-
-        for (int i = 0; i < n; i++) {
-            int A_item = parse_int(*(A_temp + i));
-
-            *(A + i) = A_item;
-        }
-
-        char* result = larrysArray(n, A);
-
-        fprintf(fptr, "%s\n", result);
+        *(arr + i) = arr_item;
     }
 
-    fclose(fptr);
+    almostSorted(n, arr);
 
     return 0;
 }

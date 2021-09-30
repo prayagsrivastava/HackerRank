@@ -17,76 +17,42 @@ char** split_string(char*);
 int parse_int(char*);
 
 /*
- * Complete the 'larrysArray' function below.
+ * Complete the 'matrixRotation' function below.
  *
- * The function is expected to return a STRING.
- * The function accepts INTEGER_ARRAY A as parameter.
+ * The function accepts following parameters:
+ *  1. 2D_INTEGER_ARRAY matrix
+ *  2. INTEGER r
  */
 
-/*
- * To return the string from the function, you should either do static allocation or dynamic allocation
- *
- * For example,
- * char* return_string_using_static_allocation() {
- *     static char s[] = "static allocation of string";
- *
- *     return s;
- * }
- *
- * char* return_string_using_dynamic_allocation() {
- *     char* s = malloc(100 * sizeof(char));
- *
- *     s = "dynamic allocation of string";
- *
- *     return s;
- * }
- *
- */
-char* larrysArray(int A_count, int* A)
-{
-    int count, sum = 0;
-    for (int x = 0; x < (A_count - 1); x++)
-    {
-        count = 0;
-        for (int y = (x + 1); y < A_count; y++)
-        {
-            if (A[x] > A[y])
-                count++;
-        }
-        sum += count;
-    }
+void matrixRotation(int matrix_rows, int matrix_columns, int** matrix, int r) {
 
-    if ((sum % 2) == 0)
-        return "YES";
-    else
-        return "NO";
 }
 
 int main()
 {
-    FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
+    char** first_multiple_input = split_string(rtrim(readline()));
 
-    int t = parse_int(ltrim(rtrim(readline())));
+    int m = parse_int(*(first_multiple_input + 0));
 
-    for (int t_itr = 0; t_itr < t; t_itr++) {
-        int n = parse_int(ltrim(rtrim(readline())));
+    int n = parse_int(*(first_multiple_input + 1));
 
-        char** A_temp = split_string(rtrim(readline()));
+    int r = parse_int(*(first_multiple_input + 2));
 
-        int* A = malloc(n * sizeof(int));
+    int** matrix = malloc(m * sizeof(int*));
 
-        for (int i = 0; i < n; i++) {
-            int A_item = parse_int(*(A_temp + i));
+    for (int i = 0; i < m; i++) {
+        *(matrix + i) = malloc(n * (sizeof(int)));
 
-            *(A + i) = A_item;
+        char** matrix_item_temp = split_string(rtrim(readline()));
+
+        for (int j = 0; j < n; j++) {
+            int matrix_item = parse_int(*(matrix_item_temp + j));
+
+            *(*(matrix + i) + j) = matrix_item;
         }
-
-        char* result = larrysArray(n, A);
-
-        fprintf(fptr, "%s\n", result);
     }
 
-    fclose(fptr);
+    matrixRotation(m, n, matrix, r);
 
     return 0;
 }
