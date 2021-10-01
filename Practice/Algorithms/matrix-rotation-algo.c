@@ -23,10 +23,73 @@ int parse_int(char*);
  *  1. 2D_INTEGER_ARRAY matrix
  *  2. INTEGER r
  */
+void printmatrix(int, int, int**);
+void free_matrix(int, int, int**);
+void rotate_matrix(int rows, int columns, int matrix_rows, int matrix_columns, int **matrix);
 
-void matrixRotation(int matrix_rows, int matrix_columns, int** matrix, int r) {
 
+void matrixRotation(int matrix_rows, int matrix_columns, int** matrix, int r)
+{
+    int rows = 0, columns = 0, temp_r = matrix_rows, temp_c = matrix_columns, temp_rc;
+    while(rows < matrix_rows/2 && columns < matrix_columns/2)
+    {
+        temp_rc = abs(((temp_r - rows)*2) + (((temp_c - columns)*2) - 4));
+        for (int c = 0; c < (r%temp_rc); c++)
+            rotate_matrix(rows, columns, matrix_rows, matrix_columns, matrix);
+        rows++;
+        columns++;
+        temp_r--;
+        temp_c--;
+    }
+    printmatrix(matrix_rows, matrix_columns, matrix);
+    free_matrix(rows, columns, matrix);
+    return;
 }
+
+void printmatrix(int r, int c, int **matrix)
+{
+    for (int x=0; x<r; x++)
+        for (int y=0; y<c; y++)
+            if (y == c-1)
+                printf("%i\n", matrix[x][y]);
+            else
+                printf("%i ", matrix[x][y]);
+}
+
+
+void free_matrix(int r, int c, int** matrix)
+{
+    for (int x=0; x<r; x++)
+        free(matrix[x]);
+    free(matrix);
+    return;
+}
+
+
+void rotate_matrix(int rows, int columns, int matrix_rows, int matrix_columns, int **matrix)
+{
+    int r1 = rows, r2 = matrix_rows - 1 - rows, c1 = columns, c2 = matrix_columns - 1 - columns, r, c;
+
+    int temp1 = matrix[r2][c1], temp2;
+    for (r = r2; r > r1; r--)
+        matrix[r][c1] = matrix[r-1][c1];
+    
+    temp2 = matrix[r2][c2];
+    for (c = c2; c > c1+1; c-- )
+        matrix[r2][c] = matrix[r2][c-1];
+    matrix[r2][c] = temp1;
+
+    temp1 = matrix[r1][c2];
+    for (r = r1; r < r2-1; r++)
+        matrix[r][c2] = matrix[r+1][c2];
+    matrix[r][c2] = temp2;
+
+    for (c = c1; c < c2-1; c++)
+        matrix[r1][c] = matrix[r1][c+1];
+    matrix[r1][c] = temp1;
+}
+
+
 
 int main()
 {
