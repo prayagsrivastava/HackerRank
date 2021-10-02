@@ -57,8 +57,111 @@ int parse_int(char*);
  * }
  *
  */
-char** weightedUniformStrings(char* s, int queries_count, int* queries, int* result_count) {
+int* get_weights(char c, int count);
+char* get_alphabets(void);
 
+char *alphabets = NULL;
+
+typedef struct unistr
+{
+    char c;
+    int count;
+    int *weights;
+}unistr;
+
+char** weightedUniformStrings(char* s, int queries_count, int* queries, int* result_count)
+{
+    alphabets = get_alphabets();
+    unistr* a = NULL;
+    int l = strlen(s), c = 0, struct_counter = 0;
+    int* weights = NULL, weights_counter = 0;
+
+    while(c < l)
+    {
+        a = realloc(a, sizeof(unistr)*(struct_counter+1));
+        a[struct_counter].c = s[c];
+        a[struct_counter].count = 1;
+
+        while(1)
+        {
+            if (s[c] == s[c+1])
+                a[struct_counter].count += 1;
+            else
+                break;
+            c++;
+        }
+        a[struct_counter].weights = get_weights(a[struct_counter].c, a[struct_counter].count);
+        c++;
+        struct_counter++;
+    }
+
+    for (int x = 0; x < struct_counter; x++)
+    {   
+        for (int y = 0; y < a[x].count; y++)
+        {
+            weights = realloc(weights, sizeof(int)*(weights_counter+1));
+            weights[weights_counter] = a[x].weights[y];
+            weights_counter++;
+        }
+        free(a[x].weights);
+    }
+    free(a);
+    free(alphabets);
+    
+    int check;
+    char** results = malloc(sizeof(char*)*queries_count);
+    for (int x = 0; x < queries_count; x++)
+    {   
+        check = 1;
+        for (int y = 0; y < weights_counter; y++)
+        {
+            if (queries[x] == weights[y])
+            {
+                results[x] = "Yes";
+                check = 0;
+                break;
+            }
+        }
+        if (check)
+            results[x] = "No";
+    }
+    
+    *result_count = queries_count;
+    free(weights);
+    return results;
+}
+
+
+int* get_weights(char c, int count)
+{
+    int y;
+    for (y = 1; y < 27; y++)
+        if (c == alphabets[y])
+            break;
+    int * weights = NULL;
+    for (int x = 1; x <= count; x++)
+    {
+        weights = realloc(weights, sizeof(int)*x);
+        weights[x-1] = y*x;
+    }
+    return weights;
+}
+
+
+char* get_alphabets(void)
+{
+    char* alpha = malloc(sizeof(char)*28);
+    alpha[0] = '+';
+    int count = 1;
+
+    for (char c = 'a'; c <= 'z'; c++)
+    {
+        alpha[count] = c;
+        count++;
+    }
+
+    alpha[27] = '\0';
+    return alpha;
 }
 
 int main()
